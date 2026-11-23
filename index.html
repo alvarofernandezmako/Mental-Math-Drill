@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mental Math Drill</title>
+<link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<button id="fullscreenBtn" title="Toggle fullscreen">⛶ Fullscreen</button>
+<div id="app">
+
+  <!-- ============================== CONFIG ============================== -->
+  <section id="configScreen">
+    <div class="home-card">
+      <h2>Mental Math Drill</h2>
+      <p class="sub">A full board of theos and widths. Price the combos underneath it as fast as you can, as a theo and total width or as your market (bid / offer). Widths are the tightest the board can make. Rates are zero.</p>
+
+      <div class="cfg-section">
+        <h3>Market</h3>
+        <div class="cfg-row cfg-radiogroup">
+          <span class="cfg-label">Delta-1:</span>
+          <label><input type="radio" name="delta1" value="future"> Future</label>
+          <label><input type="radio" name="delta1" value="stock"> Stock</label>
+        </div>
+        <div class="cfg-row cfg-radiogroup">
+          <span class="cfg-label">Tick size:</span>
+          <label><input type="radio" name="tick" value="1"> 0.01</label>
+          <label><input type="radio" name="tick" value="2"> 0.02</label>
+          <label><input type="radio" name="tick" value="5"> 0.05</label>
+        </div>
+        <div class="cfg-row">
+          <label class="slider-label">Strikes <b id="strikesLabel"></b></label>
+          <div class="slider-row">
+            <span class="slider-end">3</span>
+            <input type="range" id="cfgStrikes" min="3" max="7" step="1">
+            <span class="slider-end">7</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="cfg-section">
+        <h3>Combos</h3>
+        <div class="cfg-row cfg-radiogroup">
+          <span class="cfg-label">Level:</span>
+          <label><input type="radio" name="level" value="simple"> Simple</label>
+          <label><input type="radio" name="level" value="advanced"> Advanced</label>
+        </div>
+        <p class="hint" id="levelHint"></p>
+        <div class="cfg-row cfg-radiogroup">
+          <span class="cfg-label">Answer as:</span>
+          <label><input type="radio" name="answer" value="theo"> Theo + width</label>
+          <label><input type="radio" name="answer" value="market"> Bid / offer</label>
+        </div>
+        <p class="hint" id="answerHint"></p>
+        <div class="cfg-row cfg-toggles">
+          <label class="cfg-toggle"><input type="checkbox" id="cfgDynamic"> Dynamic: the market moves every 5 combos</label>
+          <label class="cfg-toggle"><input type="checkbox" id="cfgShowLegs"> Show the legs under each combo</label>
+        </div>
+      </div>
+
+      <div class="cfg-row">
+        <label class="slider-label">Session time <b id="minutesLabel"></b></label>
+        <div class="slider-row">
+          <span class="slider-end">1m</span>
+          <input type="range" id="cfgMinutes" min="1" max="15" step="1">
+          <span class="slider-end">15m</span>
+        </div>
+      </div>
+
+      <button id="startBtn" class="start-btn">Start</button>
+    </div>
+  </section>
+
+  <!-- ============================== COUNTDOWN ============================== -->
+  <div id="countdownOverlay" class="hidden"><div id="countdownNumber">3</div></div>
+
+  <!-- ============================== DRILL ============================== -->
+  <section id="drillScreen" class="hidden">
+    <div id="drillTop">
+      <div>Score: <b id="scoreVal">0</b> <span class="muted" id="streakVal"></span></div>
+      <div id="timer">0:00</div>
+      <div class="top-right">
+        <span id="moveBadge" class="badge hidden"></span>
+        <button id="endBtn" class="small-btn">End</button>
+      </div>
+    </div>
+
+    <div id="drillMain">
+      <div id="leftCol">
+        <div id="boardCard"></div>
+        <div id="questionCard">
+          <div id="qCount" class="muted"></div>
+          <div id="qLabel"></div>
+          <div id="qLegs" class="muted"></div>
+          <div id="qNote" class="note"></div>
+          <form id="answerForm" autocomplete="off">
+            <label><span id="lbl1">Theo</span> <input id="inTheo" inputmode="decimal" placeholder="0.00"></label>
+            <label><span id="lbl2">Width</span> <input id="inWidth" inputmode="decimal" placeholder="0.00"></label>
+            <button type="submit" class="go-btn">Enter ⏎</button>
+            <button type="button" id="skipBtn" class="small-btn gray">Skip</button>
+          </form>
+          <div id="feedback"></div>
+        </div>
+      </div>
+      <aside id="historyCol">
+        <h3>Answers</h3>
+        <div id="history"></div>
+      </aside>
+    </div>
+    <div id="toast" class="hidden"></div>
+  </section>
+
+  <!-- ============================== RESULTS ============================== -->
+  <section id="resultsScreen" class="hidden">
+    <div class="results-card">
+      <h2>Drill complete</h2>
+      <div id="finalScore"></div>
+      <div id="finalStats"></div>
+      <div class="results-actions">
+        <button id="retryBtn" class="start-btn">Retry</button>
+        <button id="reconfigBtn" class="gray-btn">Reconfigure</button>
+      </div>
+    </div>
+  </section>
+
+  <button id="explainBtn" class="hidden" title="Pause the timer and see how the last combo is priced">Explain Last Answer</button>
+  <div id="explain" class="hidden"></div>
+</div>
+
+<script src="js/board.js"></script>
+<script src="js/combos.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
